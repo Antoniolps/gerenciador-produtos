@@ -30,12 +30,18 @@ public class FornecedorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FornecedorResponseDTO> buscarFornecedorPorId(@PathVariable Long id){
-        return ResponseEntity.ok(fornecedorService.buscarFornecedorPorId(id));
+        return ResponseEntity.ok(fornecedorService.buscarFornecedorPeloId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FornecedorResponseDTO> atualizarFornecedorPorId(@PathVariable Long id, @Valid @RequestBody FornecedorRequestDTO dto){
         return ResponseEntity.ok(fornecedorService.atualizarFornecedorPeloId(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarFornecedorPorId(@PathVariable Long id){
+        fornecedorService.deletarFornecedorPeloId(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

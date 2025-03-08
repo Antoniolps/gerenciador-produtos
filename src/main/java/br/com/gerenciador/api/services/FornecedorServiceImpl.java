@@ -36,7 +36,7 @@ public class FornecedorServiceImpl implements FornecedorService{
     }
 
     @Override
-    public FornecedorResponseDTO buscarFornecedorPorId(Long id) {
+    public FornecedorResponseDTO buscarFornecedorPeloId(Long id) {
         return fornecedorRepository.findById(id).map(fornecedorMapper::toDTO).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado")
         );
@@ -56,6 +56,16 @@ public class FornecedorServiceImpl implements FornecedorService{
         fornecedor.setEndereco(enderecoMapper.toEntity(dto.endereco()));
 
         return fornecedorMapper.toDTO(fornecedorRepository.save(fornecedor));
+    }
+
+    @Transactional
+    @Override
+    public void deletarFornecedorPeloId(Long id) {
+        if(!fornecedorRepository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado");
+        }
+
+        fornecedorRepository.deleteById(id);
     }
 
 
