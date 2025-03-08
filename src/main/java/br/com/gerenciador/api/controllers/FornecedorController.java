@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/fornecedores")
@@ -22,6 +21,21 @@ public class FornecedorController {
     @PostMapping
     public ResponseEntity<FornecedorResponseDTO> criarFornecedor(@Valid @RequestBody FornecedorRequestDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(fornecedorService.criarFornecedor(dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FornecedorResponseDTO>> listarTodosFornecedores(){
+        return ResponseEntity.ok(fornecedorService.listarTodosFornecedores());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FornecedorResponseDTO> buscarFornecedorPorId(@PathVariable Long id){
+        return ResponseEntity.ok(fornecedorService.buscarFornecedorPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FornecedorResponseDTO> atualizarFornecedorPorId(@PathVariable Long id, @Valid @RequestBody FornecedorRequestDTO dto){
+        return ResponseEntity.ok(fornecedorService.atualizarFornecedorPeloId(id, dto));
     }
 
 }
