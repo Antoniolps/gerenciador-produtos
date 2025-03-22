@@ -6,6 +6,7 @@ import br.com.gerenciador.api.mappers.ClienteMapper;
 import br.com.gerenciador.api.mappers.EnderecoMapper;
 import br.com.gerenciador.api.models.Cliente;
 import br.com.gerenciador.api.repositories.ClienteRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public ClienteResponseDTO atualizarClientePeloId(Long id, ClienteRequestDTO dto) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado")
@@ -54,6 +56,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional
     public void deletarClientePeloId(Long id) {
         if(!clienteRepository.existsById(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado");

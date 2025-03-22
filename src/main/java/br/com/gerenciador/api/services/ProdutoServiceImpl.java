@@ -7,6 +7,7 @@ import br.com.gerenciador.api.models.Fornecedor;
 import br.com.gerenciador.api.models.Produto;
 import br.com.gerenciador.api.repositories.FornecedorRepository;
 import br.com.gerenciador.api.repositories.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    @Transactional
     public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO produtoRequestDto) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
@@ -58,6 +60,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    @Transactional
     public void deletarProduto(Long id) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
