@@ -22,6 +22,9 @@ public class Fornecedor {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
+    @Column(name = "email", nullable = false, length = 100)
+    private String email;
+
     @Column(name = "cnpj", nullable = false, unique = true, length = 14)
     private String cnpj;
 

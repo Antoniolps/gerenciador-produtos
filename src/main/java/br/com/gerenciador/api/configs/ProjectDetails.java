@@ -10,4 +10,5 @@ public class ProjectDetails {
 
     @Value("${jwt.secret}")
     private String secret;
+
 }
