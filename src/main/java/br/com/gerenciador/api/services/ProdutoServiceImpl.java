@@ -2,13 +2,18 @@ package br.com.gerenciador.api.services;
 
 import br.com.gerenciador.api.dtos.ProdutoRequestDTO;
 import br.com.gerenciador.api.dtos.ProdutoResponseDTO;
+import br.com.gerenciador.api.dtos.filters.ProdutoFilter;
 import br.com.gerenciador.api.mappers.ProdutoMapper;
 import br.com.gerenciador.api.models.Fornecedor;
 import br.com.gerenciador.api.models.Produto;
 import br.com.gerenciador.api.repositories.FornecedorRepository;
 import br.com.gerenciador.api.repositories.ProdutoRepository;
+import br.com.gerenciador.api.repositories.spec.ProdutoSpec;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,6 +47,13 @@ public class ProdutoServiceImpl implements ProdutoService {
         return produtoRepository.findAll().stream()
                 .map(produtoMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public Page<ProdutoResponseDTO> allPagedFiltered(int page, int size, ProdutoFilter filter) {
+        Pageable pageable = PageRequest.of(page, size);
+        return produtoRepository.findAll(ProdutoSpec.filters(filter), pageable)
+                .map(produtoMapper::toDto);
     }
 
     @Override

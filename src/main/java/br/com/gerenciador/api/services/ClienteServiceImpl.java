@@ -2,12 +2,17 @@ package br.com.gerenciador.api.services;
 
 import br.com.gerenciador.api.dtos.ClienteRequestDTO;
 import br.com.gerenciador.api.dtos.ClienteResponseDTO;
+import br.com.gerenciador.api.dtos.filters.ClienteFilter;
 import br.com.gerenciador.api.mappers.ClienteMapper;
 import br.com.gerenciador.api.mappers.EnderecoMapper;
 import br.com.gerenciador.api.models.Cliente;
 import br.com.gerenciador.api.repositories.ClienteRepository;
+import br.com.gerenciador.api.repositories.spec.ClienteSpec;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +37,13 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public List<ClienteResponseDTO> listarTodosClientes() {
         return clienteRepository.findAll().stream().map(clienteMapper::toDTO).toList();
+    }
+
+    @Override
+    public Page<ClienteResponseDTO> allPagedFiltred(int page, int size, ClienteFilter filter) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteRepository.findAll(ClienteSpec.filters(filter), pageable)
+                .map(clienteMapper::toDTO);
     }
 
     @Override

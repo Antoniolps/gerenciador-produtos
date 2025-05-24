@@ -2,9 +2,11 @@ package br.com.gerenciador.api.controllers;
 
 import br.com.gerenciador.api.dtos.ClienteRequestDTO;
 import br.com.gerenciador.api.dtos.ClienteResponseDTO;
+import br.com.gerenciador.api.dtos.filters.ClienteFilter;
 import br.com.gerenciador.api.services.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,13 @@ public class ClienteController {
     @GetMapping
     ResponseEntity<List<ClienteResponseDTO>> listarTodosClientes() {
         return ResponseEntity.ok(clienteService.listarTodosClientes());
+    }
+
+    @GetMapping("/all-filtered/{page}/{size}")
+    public  ResponseEntity<Page<ClienteResponseDTO>> getAllFiltered(@PathVariable int page,
+                                                   @PathVariable int size,
+                                                   ClienteFilter filter){
+        return ResponseEntity.ok(clienteService.allPagedFiltred(page, size, filter));
     }
 
     @GetMapping("/{id}")

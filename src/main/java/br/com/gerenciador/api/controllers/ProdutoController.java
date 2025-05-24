@@ -2,9 +2,11 @@ package br.com.gerenciador.api.controllers;
 
 import br.com.gerenciador.api.dtos.ProdutoRequestDTO;
 import br.com.gerenciador.api.dtos.ProdutoResponseDTO;
+import br.com.gerenciador.api.dtos.filters.ProdutoFilter;
 import br.com.gerenciador.api.services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,15 @@ public class ProdutoController {
     @GetMapping
     ResponseEntity<List<ProdutoResponseDTO>> buscarProdutos() {
         return ResponseEntity.ok(produtoService.buscarProdutos());
+    }
+
+    @GetMapping("/allFiltered/{page}/{size}")
+    ResponseEntity<Page<ProdutoResponseDTO>> buscarProdutosFiltrados(
+            @PathVariable int page,
+            @PathVariable int size,
+            ProdutoFilter filter
+    ) {
+        return ResponseEntity.ok(produtoService.allPagedFiltered(page, size, filter));
     }
 
     @PutMapping("/{id}")

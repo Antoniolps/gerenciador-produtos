@@ -2,9 +2,11 @@ package br.com.gerenciador.api.controllers;
 
 import br.com.gerenciador.api.dtos.FornecedorRequestDTO;
 import br.com.gerenciador.api.dtos.FornecedorResponseDTO;
+import br.com.gerenciador.api.dtos.filters.FornecedorFilter;
 import br.com.gerenciador.api.services.FornecedorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +29,14 @@ public class FornecedorController {
     @GetMapping
     public ResponseEntity<List<FornecedorResponseDTO>> listarTodosFornecedores(){
         return ResponseEntity.ok(fornecedorService.listarTodosFornecedores());
+    }
+
+    @GetMapping("/all-filtered/{page}/{size}")
+    public ResponseEntity<Page<FornecedorResponseDTO>> listarTodosFornecedoresFiltrados(
+            @PathVariable int page,
+            @PathVariable int size,
+            FornecedorFilter filter){
+        return ResponseEntity.ok(fornecedorService.allPagedFiltered(page, size, filter));
     }
 
     @GetMapping("/{id}")
