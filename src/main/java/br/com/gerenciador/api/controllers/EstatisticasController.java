@@ -1,10 +1,10 @@
 package br.com.gerenciador.api.controllers;
 
 import br.com.gerenciador.api.dtos.EstatisticasResponseDto;
-import br.com.gerenciador.api.repositories.ClienteRepository;
-import br.com.gerenciador.api.repositories.FornecedorRepository;
-import br.com.gerenciador.api.repositories.ProdutoRepository;
 import br.com.gerenciador.api.services.EstatisticasService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +18,13 @@ public class EstatisticasController {
 
     private final EstatisticasService estatisticasService;
 
+    @Operation(summary = "Obter estatísticas gerais do sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Estatísticas retornadas com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    })
     @GetMapping
     public ResponseEntity<EstatisticasResponseDto> getEstatisticas() {
         return ResponseEntity.ok(estatisticasService.getEstatisticas());
     }
-
 }
